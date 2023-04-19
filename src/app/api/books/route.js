@@ -47,13 +47,13 @@ export async function POST(request) {
     const { name, year, author, readPage, pageCount } = await request.json()
     if (!name || !year || !author || !readPage || !pageCount) {
       return NextResponse.json({
-        status: "fail",
+        status: "fail", 
         message: "Gagal menambah buku. Mohon lengkapi data",
       }, {
         status: 400
       })
     }
-  
+
     if (readPage > pageCount) {
       return NextResponse.json({
         status: "fail",
@@ -62,7 +62,7 @@ export async function POST(request) {
         status: 400
       })
     }
-  
+
     const book = await prisma.book.create({
       data: {
         name,
@@ -70,13 +70,15 @@ export async function POST(request) {
         author,
         readPage,
         pageCount,
-        finished: readPage === pageCount,
+        finished: readPage === pageCount
       },
       select: {
         id: true,
+        createdAt: true,
+        updatedAt: true
       },
     });
-  
+
     return NextResponse.json({
       status: "success",
       message: "Buku berhasil ditambahkan",
